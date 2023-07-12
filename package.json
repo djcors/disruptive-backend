@@ -1,0 +1,84 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./dist/index.js",
+  "scripts": {
+    "tsk": "npx run-func src/infrastructure/tsk-tools/commandHandler.js executeCommand",
+    "dev": "ts-node-dev --respawn -- src/index.ts",
+    "test": "npm run build && jest --no-cache --detectOpenHandles --forceExit --coverage",
+    "test:watch": "npm run build && jest --forceExit --detectOpenHandles --watchAll",
+    "build": "rm -rf dist/* && tsc --sourceMap false",
+    "up:build": "docker-compose up -d --build",
+    "up": "docker-compose up -d",
+    "lint": "tsc --noEmit && eslint \"**/*.{js,ts}\" --quiet --fix",
+    "pretty-quick": "pretty-quick",
+    "pretty-check": "pretty-quick --check",
+    "pre-commit": "npm run lint && npm run pretty-quick --staged && npm run test",
+    "start": "node dist/index"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/djcors/disruptive-backend"
+  },
+  "keywords": [
+    "node",
+    "ts",
+    "skeleton",
+    "nodejs",
+    "typescript",
+    "template",
+    "clean architecture",
+    "design patterns"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/djcors/disruptive-backend/blob/master/README.md",
+  "engines": {
+    "node": ">=18",
+    "npm": ">=8.19.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.17",
+    "@types/jest": "^29.5.2",
+    "@types/jsonwebtoken": "^9.0.2",
+    "@types/luxon": "^3.3.0",
+    "@types/node": "^18.16.18",
+    "@types/node-fetch": "^2.6.4",
+    "@types/uuid": "^9.0.2",
+    "@typescript-eslint/eslint-plugin": "^5.60.0",
+    "@typescript-eslint/parser": "^5.60.0",
+    "eslint": "^8.43.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "husky": "^8.0.3",
+    "jest": "^29.5.0",
+    "jest-fetch-mock": "^3.0.3",
+    "jest-mock-extended": "^3.0.4",
+    "prettier": "^2.8.8",
+    "pretty-quick": "^3.1.3",
+    "ts-jest": "^29.1.0",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.1.3"
+  },
+  "dependencies": {
+    "dic-tsk": "^1.0.3",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-async-errors": "^3.1.1",
+    "fast-glob": "^3.2.12",
+    "helmet": "^7.0.0",
+    "jsonwebtoken": "^9.0.0",
+    "luxon": "^3.3.0",
+    "mapper-tsk": "^2.0.2",
+    "node-fetch": "^2.6.11",
+    "resources-tsk": "^2.1.2",
+    "result-tsk": "^2.1.3",
+    "uuid": "^9.0.0",
+    "validator-tsk": "^2.0.2"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run pre-commit"
+    }
+  }
+}
