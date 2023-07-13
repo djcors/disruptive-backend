@@ -9,13 +9,31 @@ import { TryWrapper } from "../../../../domain/shared/utils/TryWrapper";
 import ArrayUtil from "../../../../domain/shared/utils/ArrayUtil";
 import { ISession } from "../../../../domain/session/ISession";
 import { Middleware } from "../../types";
+import config from "../../../config";
+import { BooleanUtil } from "../../../../domain/shared/utils/BooleanUtil";
 
 const TOKEN_PARTS = 2;
 const TOKEN_POSITION_VALUE = 1;
+const ROUTE_WHITE_LIST = [
+  `${config.Server.Root}/ping`,
+  `${config.Server.Root}/v1/auth/login`,
+  `${config.Server.Root}/v1/users/sign-up`,
+];
+
 
 class AuthorizationMiddleware {
+    
+
   handle: Middleware = (req: Request, _res: Response, next: NextFunction): void => {
     if (TypeParser.cast<IRequest>(req).isWhiteList) return next();
+
+    const existsUnauthorizedPath = ROUTE_WHITE_LIST.some((path) =>
+      BooleanUtil.areEqual(path, req.path),
+    );
+
+    if (existsUnauthorizedPath) {
+      return next();
+    }
 
     const auth = req.headers.authorization;
 

@@ -14,7 +14,7 @@ import { TResponse } from "./TResponse";
 
 type HttpResponseType<ResType> = ResType | string | ArrayBuffer | unknown;
 
-export class HttpClient extends BaseHttpClient {
+class HttpClient extends BaseHttpClient {
   #SERIALIZED = true;
 
   constructor() {
@@ -105,6 +105,7 @@ export class HttpClient extends BaseHttpClient {
       serializationMethod: SerializationType.JSON,
     },
   ): Promise<TResponse<ResType, ErrType>> {
+    console.log(reqArgs)
     const request = this.buildRequest(
       url,
       reqArgs?.method,
@@ -116,6 +117,7 @@ export class HttpClient extends BaseHttpClient {
     try {
       const response = await fetch(url, request);
       if (response.ok) {
+        
         const data = await this.processResponseData<ResType>(response, reqArgs.serializationMethod);
         result.setResponse(data);
       } else {
@@ -132,3 +134,5 @@ export class HttpClient extends BaseHttpClient {
     return result;
   }
 }
+
+export default new HttpClient();

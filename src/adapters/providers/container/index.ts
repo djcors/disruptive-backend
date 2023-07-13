@@ -7,6 +7,8 @@ import { AuthProvider } from "../auth/Auth.provider";
 import { LogProvider } from "../log/Log.provider";
 import kernel from "../../shared/kernel";
 import { ILogger } from "../log/ILogger";
+import { MessariMetricProvider } from "../messari/metrics/Messari.metric.provider";
+
 
 const CONTEXT = "ProviderContainer";
 
@@ -29,6 +31,13 @@ kernel.addSingleton(
   WorkerProvider.name,
   new WorkerProvider(kernel.get<LogProvider>(CONTEXT, LogProvider.name)),
 );
+
+kernel.addSingleton(
+  MessariMetricProvider.name,
+  new MessariMetricProvider(
+    kernel.get<LogProvider>(CONTEXT, LogProvider.name)
+  )
+)
 
 export { LogProvider, AuthProvider, HealthProvider, WorkerProvider };
 export default kernel;

@@ -1,13 +1,13 @@
 {
   "openapi": "3.0.3",
   "info": {
-    "title": "NodeTSkeleton API",
+    "title": "DisruptiveStudio API",
     "version": "1.0.0",
-    "description": "Api documentation for NodeTSkeleton project",
+    "description": "disruptive-backend",
     "contact": {
       "name": "TSK Support",
-      "url": "https://github.com/harvic3/nodetskeleton",
-      "email": "harvic3@protonmail.com"
+      "url": "https://github.com/djcors/disruptive-backend",
+      "email": ""
     },
     "license": {
       "name": "MIT"
@@ -15,7 +15,7 @@
   },
   "servers": [
     {
-      "url": "localhost:3003/api",
+      "url": "localhost:3000/api",
       "description": "Local server"
     }
   ],
@@ -77,6 +77,43 @@
     "/v1/users/sign-up": {
       "post": {
         "description": "Register a new user",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/metrics/:assets": {
+      "get": {
+        "description": "API Metricst",
         "responses": {
           "200": {
             "description": "Success",

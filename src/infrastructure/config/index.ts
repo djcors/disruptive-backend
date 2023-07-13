@@ -39,12 +39,12 @@ export default {
   Server: {
     Root: DefaultValue.evaluateAndGet(process.env.SERVER_ROOT, "/api"),
     Host: DefaultValue.evaluateAndGet(process.env.SERVER_HOST, "localhost"),
-    Port: DefaultValue.evaluateAndGet(Number(process.env.SERVER_PORT), 3003),
+    Port: DefaultValue.evaluateAndGet(Number(process.env.SERVER_PORT), 3000),
     Origins: DefaultValue.evaluateAndGet(
       process.env.ORIGINS,
       "http://localhost:3000,http://localhost:3001,http://localhost:3002",
     ),
-    ServiceName: DefaultValue.evaluateAndGet(process.env.SERVICE_NAME, "NodeTskeleton"),
+    ServiceName: DefaultValue.evaluateAndGet(process.env.SERVICE_NAME, "DisruptiveStudio"),
     ServiceContext: {
       LoadWithContext: !!process.env.SERVICE_CONTEXT,
       Context: serviceContext,
@@ -84,13 +84,13 @@ export default {
       "https://google.com",
     ),
     ApiDocsInfo: {
-      title: "NodeTSkeleton API",
+      title: "DisruptiveStudio API",
       version: "1.0.0",
-      description: "Api documentation for NodeTSkeleton project",
+      description: "disruptive-backend",
       contact: {
         name: "TSK Support",
-        url: "https://github.com/harvic3/nodetskeleton",
-        email: "harvic3@protonmail.com",
+        url: "https://github.com/djcors/disruptive-backend",
+        email: "",
       },
       license: {
         name: "MIT",
