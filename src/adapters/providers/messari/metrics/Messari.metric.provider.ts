@@ -1,10 +1,8 @@
 
 import HttpClient from "../../../../infrastructure/httpClient/HttpClient";
 import { MetricError } from "./models/MetricError";
-import { ApplicationError, BaseProvider } from "../../base/Base.provider";
-
+import { BaseProvider } from "../../base/Base.provider";
 import { MetricsDto } from "../../../../application/modules/metrics/dtos/MetricsDto";
-import { Assets } from "./models/Assets.enum";
 import { MetricResponse } from "./models/MetricResponse";
 import { ILogProvider } from "../../../../application/shared/log/providerContracts/ILogProvider";
 import { IMetricProvider } from "../../../../application/modules/metrics/providerContracts/IMetric.provider";

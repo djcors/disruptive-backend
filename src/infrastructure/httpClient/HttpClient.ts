@@ -105,7 +105,6 @@ class HttpClient extends BaseHttpClient {
       serializationMethod: SerializationType.JSON,
     },
   ): Promise<TResponse<ResType, ErrType>> {
-    console.log(reqArgs)
     const request = this.buildRequest(
       url,
       reqArgs?.method,

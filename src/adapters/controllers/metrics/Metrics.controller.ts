@@ -4,7 +4,6 @@ import { TokenDto } from "../../../application/modules/auth/dtos/TokenDto";
 import { ResultTDescriber, PropTypeEnum, TypeDescriber } from "../base/context/apiDoc/TypeDescriber";
 import { MetricUseCase } from "../../../application/modules/metrics/useCases";
 import container from "./container";
-import { Assets } from "../../providers/messari/metrics/models/Assets.enum";
 
 export class MetricsController extends BaseController {
     constructor(serviceContainer: IServiceContainer) {
@@ -25,7 +24,7 @@ export class MetricsController extends BaseController {
             res.trace,
             {
               asset: req.params.asset
-            },
+            }
           ),
           { [HttpHeaderEnum.CONTENT_TYPE]: HttpContentTypeEnum.APPLICATION_JSON },
         )

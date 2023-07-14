@@ -2,7 +2,7 @@ import { MarketData } from "../../../../adapters/providers/messari/metrics/model
 import { RoiData } from "../../../../adapters/providers/messari/metrics/models/RoiData";
 
 export class MetricsDto {
-    success: boolean = false;
+    success!: boolean;
     id!: string;
     symbol!: string;
     name!: string;

@@ -48,5 +48,12 @@ export abstract class BaseUseCase<T> {
     Throw.when(this.CONTEXT, !!result?.error, result.error, result.statusCode);
   }
 
+  setError(result: IResult) {
+    result.setError(
+      this.appMessages.get(this.appMessages.keys.INVALID_ASSET),
+      this.applicationStatus.NOT_FOUND,
+    );
+  }
+
   abstract execute(locale: LocaleTypeEnum, trace: UseCaseTrace, args?: T): Promise<IResult>;
 }
