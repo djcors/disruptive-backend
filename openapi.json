@@ -57,6 +57,80 @@
         }
       }
     },
+    "/v1/balance": {
+      "post": {
+        "description": "Get new balance for a crypto",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResultTTokenDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResultTTokenDto"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "description": "Balance for a crypto",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/metrics/:asset": {
+      "get": {
+        "description": "Get asset metric",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResultTTokenDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResultTTokenDto"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "description": "Merics for assets",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/string"
+              }
+            }
+          }
+        }
+      }
+    },
     "/ping": {
       "get": {
         "description": "API status endpoint",
@@ -77,80 +151,6 @@
     "/v1/users/sign-up": {
       "post": {
         "description": "Register a new user",
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Result"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Result"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Result"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v1/metrics/:assets": {
-      "get": {
-        "description": "API Metricst",
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Result"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Result"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Result"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v1/balance": {
-      "post": {
-        "description": "Get new balance",
         "responses": {
           "200": {
             "description": "Success",
@@ -232,6 +232,25 @@
         "required": [
           "email",
           "passwordB64"
+        ]
+      },
+      "string": {
+        "type": "object",
+        "properties": {
+          "from": {
+            "type": "string"
+          },
+          "to": {
+            "type": "string"
+          },
+          "fromAmmount": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "from",
+          "to",
+          "fromAmmount"
         ]
       },
       "Result": {

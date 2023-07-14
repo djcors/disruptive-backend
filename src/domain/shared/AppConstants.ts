@@ -10,4 +10,5 @@ export class AppConstants {
   static readonly ASSET_BTC = 'btc';
   static readonly ASSET_ETH = 'eth';
   static readonly ASSET_ADA = 'ada';
+  static readonly ASSET_USD = 'usd';
 }

@@ -45,7 +45,7 @@ export class BalanceController extends BaseController {
         this.setRouter(router());
         this.addRoute({
             method: HttpMethodEnum.POST,
-            path: "/v1/balance/",
+            path: "/v1/balance",
             handlers: [this.balance],
             produces: [
               {

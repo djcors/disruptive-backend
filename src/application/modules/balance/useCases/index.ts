@@ -1,6 +1,8 @@
+import { BalanceFactory } from "../../../../adapters/providers/balance/factory/BalanceFactory";
 import { Balance } from "../../../../domain/balance/Balance";
 import { AppConstants } from "../../../../domain/shared/AppConstants";
 import { Assets } from "../../../../domain/shared/enums/Assets.enum";
+import { BalanceProviderType } from "../../../../domain/shared/enums/BalanceProviderType.enum";
 import { TryResult, TryWrapper } from "../../../../domain/shared/utils/TryWrapper";
 import { LocaleTypeEnum } from "../../../shared/locals/LocaleType.enum";
 import { UseCaseTrace } from "../../../shared/log/UseCaseTrace";
@@ -9,10 +11,12 @@ import { BaseUseCase, IResult, IResultT, ResultT } from "../../../shared/useCase
 import { MetricsDto } from "../../metrics/dtos/MetricsDto";
 import { BalanceDto, BalanceRequest, IBalance, IBlalanceRequest } from "../dtos/Balance.dto";
 import { RevenueDto } from "../dtos/Revenue.dto";
+import { IBalanceProvider } from "../providerContracts/IBalanceProvider";
 
 export class BalanceUseCase extends BaseUseCase<IBlalanceRequest> {
     constructor(
         readonly logProvider: ILogProvider,
+        readonly providerFactory: BalanceFactory
     ) {
         super(BalanceUseCase.name, logProvider);
     }
@@ -25,8 +29,10 @@ export class BalanceUseCase extends BaseUseCase<IBlalanceRequest> {
         this.setLocale(locale);
         this.initializeUseCaseTrace(trace, args, []);
         const result = new ResultT<Balance>();
-        const revenuePercent = this.getPercentRevenue(args.asset);
-        const revenue = this.calculateRevenue(
+        const provider = this.providerFactory.getProvider(this.logProvider, args.asset);
+        const revenuePercent = provider.getPercentRevenue(args.asset)
+        // const revenuePercent = this.getPercentRevenue(args.asset);
+        const revenue = provider.calculateRevenue(
             revenuePercent,
             args.coin.marketData.price_usd,
             args.asset,
