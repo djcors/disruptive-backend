@@ -30,11 +30,11 @@ export class BalanceUseCase extends BaseUseCase<IBlalanceRequest> {
         this.initializeUseCaseTrace(trace, args, []);
         const result = new ResultT<Balance>();
         const provider = this.providerFactory.getProvider(this.logProvider, args.asset);
-        const revenuePercent = provider.getPercentRevenue(args.asset)
-        // const revenuePercent = this.getPercentRevenue(args.asset);
+        const asset = this.validateFromInvestment(args.investment.from, args.investment.to)
+        const revenuePercent = provider.getPercentRevenue(asset)
         const revenue = provider.calculateRevenue(
             revenuePercent,
-            args.coin.marketData.price_usd,
+            args.coin.marketData,
             args.asset,
             args.investment.fromAmmount,
         )
@@ -47,35 +47,9 @@ export class BalanceUseCase extends BaseUseCase<IBlalanceRequest> {
 
         return result
     }
-
-    getPercentRevenue(asset: string): number {
-        let revenue: number; 
-        switch (asset) {
-            case Assets.ADA:
-                revenue = AppConstants.ADA_MONTLY
-                break;
-            case Assets.BTC:
-                revenue = AppConstants.BTC_MONTLY
-            default:
-                revenue = AppConstants.ETH_MONTLY
-                break;
-        }
-
-        return revenue
-    }
-
-    calculateRevenue(percent: number, basePrice: number, asset: string, ammount: number): RevenueDto {
-        const ONE_HUNDRED = 100;
-        const YEAR = 12;
-        return {
-           from:  asset,
-           monthly: ((ONE_HUNDRED * percent) + basePrice) * ammount,
-           yearly: (((ONE_HUNDRED * percent) + basePrice) * YEAR) * ammount,
-           toAmmount: basePrice * ammount,
-           fromAmmount: ammount,
-           basePrice,
-           percent
-        } as RevenueDto
-    }
     
+    validateFromInvestment(from: string, to: string): string {
+        if (from === BalanceProviderType.USD) return to
+        return from
+    }
 }

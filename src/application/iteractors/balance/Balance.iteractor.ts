@@ -41,7 +41,6 @@ export class BalanceInteractor extends BaseUseCase<{[key: string]: IBalance | st
             this.setError(result);
             return result;
         };
-
         
         const balance = await this.balanceUseCase.execute(
             locale,
@@ -49,7 +48,7 @@ export class BalanceInteractor extends BaseUseCase<{[key: string]: IBalance | st
             {
                 investment: balanceRequest,
                 coin: metrics.data as MetricsDto,
-                asset
+                asset: args.asset as string,
                 
             }
         )
