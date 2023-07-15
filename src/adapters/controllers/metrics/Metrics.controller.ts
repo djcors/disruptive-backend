@@ -1,13 +1,12 @@
 import { IServiceContainer } from "dic-tsk";
 import BaseController, { EntryPointHandler, HttpContentTypeEnum, HttpHeaderEnum, HttpMethodEnum, HttpStatusEnum, INextFunction, IRequest, IResponse, IRouter, ServiceContext, applicationStatus } from "../base/Base.controller";
-import { TokenDto } from "../../../application/modules/auth/dtos/TokenDto";
-import { ResultTDescriber, PropTypeEnum, TypeDescriber } from "../base/context/apiDoc/TypeDescriber";
+import { PropTypeEnum, TypeDescriber } from "../base/context/apiDoc/TypeDescriber";
 import { MetricUseCase } from "../../../application/modules/metrics/useCases";
 import container from "./container";
 
 export class MetricsController extends BaseController {
     constructor(serviceContainer: IServiceContainer) {
-        super(MetricsController.name, serviceContainer, ServiceContext.SECURITY);
+        super(MetricsController.name, serviceContainer, ServiceContext.METRIC);
     }
 
     get: EntryPointHandler = async (
@@ -51,34 +50,11 @@ export class MetricsController extends BaseController {
           apiDoc: {
             contentType: HttpContentTypeEnum.APPLICATION_JSON,
             requireAuth: false,
-            schema: new ResultTDescriber<TokenDto>({
-              name: TokenDto.name,
-              type: PropTypeEnum.OBJECT,
+            schema: new TypeDescriber<string>({
+              name: PropTypeEnum.STRING,
+              type: PropTypeEnum.PRIMITIVE,
               props: {
-                data: new TypeDescriber<TokenDto>({
-                  name: TokenDto.name,
-                  type: PropTypeEnum.OBJECT,
-                  props: {
-                    token: {
-                      type: PropTypeEnum.STRING,
-                    },
-                    expiresIn: {
-                      type: PropTypeEnum.NUMBER,
-                    },
-                  },
-                }),
-                error: {
-                  type: PropTypeEnum.STRING,
-                },
-                message: {
-                  type: PropTypeEnum.STRING,
-                },
-                statusCode: {
-                  type: PropTypeEnum.STRING,
-                },
-                success: {
-                  type: PropTypeEnum.BOOLEAN,
-                },
+                primitive: PropTypeEnum.STRING,
               },
             }),
             requestBody: {

@@ -3,7 +3,6 @@ import { UserRepository } from "../../adapters/repositories/user/User.repository
 import { BaseHttpClient } from "../../adapters/shared/httpClient/BaseHttpClient";
 import kernel, { IServiceContainer } from "../../adapters/shared/kernel";
 import { LogProvider } from "../../adapters/providers/log/Log.provider";
-import { UserModel } from "../dataBases/nodeTsKeleton/User.model";
 import HttpClient from "../httpClient/HttpClient";
 import { Logger } from "../logger/Logger";
 
@@ -17,12 +16,6 @@ class InfrastructureServiceContainer {
 
     // Load HttpClient to kernel
     this.tsKernel.addSingleton(BaseHttpClient.name, HttpClient);
-
-    // Load Model Repositories to kernel
-    this.tsKernel.addSingleton(
-      this.tsKernel.classToInterfaceName(UserRepository.name),
-      new UserModel(),
-    );
   }
 }
 

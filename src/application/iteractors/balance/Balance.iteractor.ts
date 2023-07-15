@@ -1,4 +1,5 @@
 import { Balance } from "../../../domain/balance/Balance";
+import { Assets } from "../../../domain/shared/enums/Assets.enum";
 import { BalanceProviderType } from "../../../domain/shared/enums/BalanceProviderType.enum";
 import { BalanceDto, BalanceRequest, IBalance } from "../../modules/balance/dtos/Balance.dto";
 import { BalanceUseCase } from "../../modules/balance/useCases";
@@ -9,7 +10,7 @@ import { UseCaseTrace } from "../../shared/log/UseCaseTrace";
 import { ILogProvider } from "../../shared/log/providerContracts/ILogProvider";
 import { BaseUseCase, IResult, ResultT } from "../../shared/useCase/BaseUseCase";
 
-export class BalanceInteractor extends BaseUseCase<{[key: string]: IBalance | string }> {
+export class BalanceInteractor extends BaseUseCase<IBalance> {
     constructor(
         readonly logProvider: ILogProvider,
         readonly metricUseCase: MetricUseCase,
@@ -21,23 +22,20 @@ export class BalanceInteractor extends BaseUseCase<{[key: string]: IBalance | st
     async execute(
         locale: LocaleTypeEnum,
         trace: UseCaseTrace,
-        args: {[key: string]: IBalance | string }  
+        args:  IBalance
     ): Promise<IResult> {
-        const result = new ResultT<Balance>();
-        const balanceRequest = args.balanceRequest as BalanceRequest;
-        const asset = this.validateFromInvestment(
-            args.asset as string,
-            balanceRequest.to
+        const result = new ResultT<Balance[]>();
+        const promises = Object.values(Assets).map(asset =>
+            this.metricUseCase.execute(
+                locale,
+                trace,
+                {
+                    asset
+                }
+            )
         );
-
-        const metrics = await this.metricUseCase.execute(
-            locale,
-            trace,
-            {
-                asset
-            }
-        );
-        if (!metrics.success) {
+        const metrics = await Promise.all(promises);
+        if (metrics.some((metric) => !metric.success)) {
             this.setError(result);
             return result;
         };
@@ -46,9 +44,8 @@ export class BalanceInteractor extends BaseUseCase<{[key: string]: IBalance | st
             locale,
             trace,
             {
-                investment: balanceRequest,
-                coin: metrics.data as MetricsDto,
-                asset: args.asset as string,
+                coins: metrics.map((metric) => metric.data as MetricsDto),
+                ammount: args.ammount
                 
             }
         )
@@ -63,10 +60,4 @@ export class BalanceInteractor extends BaseUseCase<{[key: string]: IBalance | st
         return result;
 
     }
-
-    validateFromInvestment(from: string, to: string): string {
-        if (from === BalanceProviderType.USD) return to
-        return from
-    }
-
 }

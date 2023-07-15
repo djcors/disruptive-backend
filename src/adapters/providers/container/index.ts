@@ -3,7 +3,6 @@ import { BaseHttpClient } from "../../shared/httpClient/BaseHttpClient";
 import { IUserModel } from "../../repositories/user/IUser.model";
 import { HealthProvider } from "../health/Health.provider";
 import { WorkerProvider } from "../worker/Worker.provider";
-import { AuthProvider } from "../auth/Auth.provider";
 import { LogProvider } from "../log/Log.provider";
 import kernel from "../../shared/kernel";
 import { ILogger } from "../log/ILogger";
@@ -15,13 +14,6 @@ const CONTEXT = "ProviderContainer";
 kernel.addSingleton(
   LogProvider.name,
   new LogProvider(kernel.get<ILogger>(CONTEXT, kernel.classToInterfaceName(LogProvider.name))),
-);
-kernel.addSingleton(
-  AuthProvider.name,
-  new AuthProvider(
-    kernel.get<LogProvider>(CONTEXT, LogProvider.name),
-    kernel.get<IUserModel>(CONTEXT, kernel.classToInterfaceName(UserRepository.name)),
-  ),
 );
 kernel.addSingleton(
   HealthProvider.name,
@@ -39,5 +31,5 @@ kernel.addSingleton(
   )
 )
 
-export { LogProvider, AuthProvider, HealthProvider, WorkerProvider };
+export { LogProvider, HealthProvider, WorkerProvider };
 export default kernel;

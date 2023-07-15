@@ -15,6 +15,7 @@ export default class AppSettings {
   static JWTEncryptionKey: string;
   static JWTExpirationTime: number;
   static DefaultHealthRemoteService: string;
+  static socketRoot: string;
 
   static init(config: Record<string, any>): void {
     this.Environment = config.Environment;
@@ -31,5 +32,6 @@ export default class AppSettings {
     this.JWTEncryptionKey = config.Params.Security.JWT.SecretKey;
     this.JWTExpirationTime = config.Params.Security.JWT.ExpireInSeconds;
     this.DefaultHealthRemoteService = config.Params.DefaultHealthRemoteService;
+    this.socketRoot = config.socketServer.root
   }
 }

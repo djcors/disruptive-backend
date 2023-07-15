@@ -9,7 +9,7 @@ export class FromAssetProvider extends BaseProvider implements IBalanceProvider 
 
     getPercentRevenue(asset: string): number {
         let revenue: number; 
-        switch (asset) {
+        switch (asset.toLocaleLowerCase()) {
             case Assets.ADA:
                 revenue = AppConstants.ADA_MONTLY
                 break;
@@ -26,13 +26,15 @@ export class FromAssetProvider extends BaseProvider implements IBalanceProvider 
     calculateRevenue(percent: number, marketData: MarketData, asset: string, ammount: number): RevenueDto {
         const ONE_HUNDRED = 100;
         const YEAR = 12;
+        const coinValue = marketData.price_usd;
+        const realAmmount = (marketData.price_usd / ammount);
         return {
            from:  asset,
-           monthly: ((ONE_HUNDRED * percent) + marketData.price_usd) * ammount,
-           yearly: (((ONE_HUNDRED * percent) + marketData.price_usd) * YEAR) * ammount,
-           toAmmount: marketData.price_usd * ammount,
+           monthly: ((ONE_HUNDRED * percent) + coinValue) / realAmmount,
+           yearly: (((ONE_HUNDRED * percent) + coinValue) * YEAR) / realAmmount,
+           toAmmount: ammount/coinValue,
            fromAmmount: ammount,
-           basePrice: marketData.price_usd,
+           basePrice: coinValue,
            percent
         } as RevenueDto
     }

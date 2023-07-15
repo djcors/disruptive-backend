@@ -1,6 +1,5 @@
 import { IServiceContainer } from "dic-tsk";
 import BaseController, { EntryPointHandler, HttpContentTypeEnum, HttpHeaderEnum, HttpMethodEnum, HttpStatusEnum, INextFunction, IRequest, IResponse, IRouter, ServiceContext, applicationStatus } from "../base/Base.controller";
-import { TokenDto } from "../../../application/modules/auth/dtos/TokenDto";
 import { ResultTDescriber, PropTypeEnum, TypeDescriber } from "../base/context/apiDoc/TypeDescriber";
 import container from "./container";
 import { IBalance } from "../../../application/modules/balance/dtos/Balance.dto";
@@ -20,8 +19,6 @@ export class BalanceController extends BaseController {
 
         try {
           const balanceRequest: IBalance = req.body;
-          const asset: string = balanceRequest.from;
-
           return await this.handleResult(
             res,
             next,
@@ -29,8 +26,7 @@ export class BalanceController extends BaseController {
               req.locale,
               res.trace,
               {
-                balanceRequest,
-                asset,
+                ammount: balanceRequest.ammount
               }
             ),
             { [HttpHeaderEnum.CONTENT_TYPE]: HttpContentTypeEnum.APPLICATION_JSON },
@@ -51,44 +47,17 @@ export class BalanceController extends BaseController {
               {
                 applicationStatus: applicationStatus.SUCCESS,
                 httpStatus: HttpStatusEnum.SUCCESS,
-              },
-              {
-                applicationStatus: applicationStatus.UNAUTHORIZED,
-                httpStatus: HttpStatusEnum.UNAUTHORIZED,
-              },
+              }
             ],
             description: "Get new balance for a crypto",
             apiDoc: {
               contentType: HttpContentTypeEnum.APPLICATION_JSON,
               requireAuth: false,
-              schema: new ResultTDescriber<TokenDto>({
-                name: TokenDto.name,
-                type: PropTypeEnum.OBJECT,
+              schema: new TypeDescriber<string>({
+                name: PropTypeEnum.STRING,
+                type: PropTypeEnum.PRIMITIVE,
                 props: {
-                  data: new TypeDescriber<TokenDto>({
-                    name: TokenDto.name,
-                    type: PropTypeEnum.OBJECT,
-                    props: {
-                      token: {
-                        type: PropTypeEnum.STRING,
-                      },
-                      expiresIn: {
-                        type: PropTypeEnum.NUMBER,
-                      },
-                    },
-                  }),
-                  error: {
-                    type: PropTypeEnum.STRING,
-                  },
-                  message: {
-                    type: PropTypeEnum.STRING,
-                  },
-                  statusCode: {
-                    type: PropTypeEnum.STRING,
-                  },
-                  success: {
-                    type: PropTypeEnum.BOOLEAN,
-                  },
+                  primitive: PropTypeEnum.STRING,
                 },
               }),
               requestBody: {
@@ -98,15 +67,7 @@ export class BalanceController extends BaseController {
                   name: PropTypeEnum.STRING,
                   type: PropTypeEnum.OBJECT,
                   props: {
-                    from: {
-                        type: PropTypeEnum.STRING,
-                        required: true,
-                      },
-                    to: {
-                        type: PropTypeEnum.STRING,
-                        required: true,
-                    },
-                    fromAmmount: {
+                    ammount: {
                         type: PropTypeEnum.NUMBER,
                         required: true,
                     }

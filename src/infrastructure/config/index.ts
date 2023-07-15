@@ -50,6 +50,9 @@ export default {
       Context: serviceContext,
     },
   },
+  socketServer: {
+    root: DefaultValue.evaluateAndGet(`${process.env.SERVER_ROOT}/stream/`, "/api/stream")
+  },
   Params: {
     Envs: {
       Dev: DEV,

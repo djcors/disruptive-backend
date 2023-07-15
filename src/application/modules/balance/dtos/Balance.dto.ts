@@ -3,21 +3,17 @@ import { MetricsDto } from "../../metrics/dtos/MetricsDto";
 
 
 export type IBalance = { 
-    from: string;
-    to: string;
-    fromAmmount: number;
+    ammount: number;
 };
 
 export class BalanceRequest  {
-    from!: string;
-    to!: string;
-    fromAmmount!: number;
+    ammount!: number;
+    coins!: MetricsDto[]
 }
 
 export type IBlalanceRequest = {
-    asset: string;
-    investment: BalanceRequest,
-    coin: MetricsDto
+    ammount: number,
+    coins: MetricsDto[]
 }
 
 export class BalanceDto extends BalanceRequest {

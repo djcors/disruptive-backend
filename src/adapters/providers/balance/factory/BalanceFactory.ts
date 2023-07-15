@@ -12,16 +12,19 @@ export class BalanceFactory {
     }
 
     getType(asset: string): BalanceProviderType {
+        let providerType;
         switch (asset) {
-            case "usd":
-                return BalanceProviderType.USD
             case "eth":
-                return BalanceProviderType.ETH
+                providerType = BalanceProviderType.ETH;
+                break;
             case "btc":
-                return BalanceProviderType.BTC
+                providerType = BalanceProviderType.BTC;
+                break;
             default:
-                return BalanceProviderType.ADA
+                providerType = BalanceProviderType.ADA;
+                break;
         }
+        return providerType;
     }
 
     [BalanceProviderType.ADA] = (logProvider: ILogProvider) => {

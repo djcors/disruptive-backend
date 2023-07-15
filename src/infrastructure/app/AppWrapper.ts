@@ -5,7 +5,6 @@ import statusController from "../../adapters/controllers/status/Status.controlle
 import routeWhiteListMiddleware from "../middleware/authorization/whiteList";
 import AppSettings from "../../application/shared/settings/AppSettings";
 import Encryption from "../../application/shared/security/encryption";
-import authorizationMiddleware from "../middleware/authorization/jwt";
 import { BooleanUtil } from "../../domain/shared/utils/BooleanUtil";
 import { TypeParser } from "../../domain/shared/utils/TypeParser";
 import resources from "../../application/shared/locals/messages";
@@ -32,6 +31,7 @@ import {
   Application,
   RequestHandler,
 } from "./core/Modules";
+import * as cors from "cors";
 
 export default class AppWrapper {
   #controllersLoadedByConstructor = false;
@@ -100,14 +100,19 @@ export default class AppWrapper {
   }
 
   private loadMiddleware(): void {
+    const allowedOrigins = ["*"];
+
+    const options: cors.CorsOptions = {
+      origin: allowedOrigins
+    };
     this.app
+      .use(cors())
       .use(helmet())
       .use(bodyParser())
       .use(urlencoded({ extended: true }))
       .use(clientInfoMiddleware.handle)
       .use(localizationMiddleware.handle)
       .use(routeWhiteListMiddleware.handle)
-      .use(authorizationMiddleware.handle)
       .use(useCaseTraceMiddleware.handle);
   }
 
@@ -140,3 +145,5 @@ export default class AppWrapper {
     });
   }
 }
+
+
